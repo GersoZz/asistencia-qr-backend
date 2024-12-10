@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import config from '../config/index'
+import config from 'src/config/index'
 
 async function dbConnect(): Promise<void> {
   const DB_URI = config.databaseURL

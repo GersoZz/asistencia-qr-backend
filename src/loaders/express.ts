@@ -2,7 +2,7 @@ import express from 'express'
 import type { Request, Response, Express } from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
-import config from '../config/index'
+import config from 'src/config/index'
 
 export default async (app: Express): Promise<Express> => {
   app.use(
