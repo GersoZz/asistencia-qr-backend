@@ -3,6 +3,8 @@ import type { Request, Response, Express } from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 import config from 'src/config/index'
+import cookieParser from 'cookie-parser'
+import routes from 'src/api/index'
 
 export default async (app: Express): Promise<Express> => {
   app.use(
@@ -15,6 +17,8 @@ export default async (app: Express): Promise<Express> => {
   app.use(morgan('dev'))
   // Transforms the raw string of req.body into json
 
+  app.use(cookieParser())
+
   app.use(express.json())
   // mdiddleware for parsing URL-encoded data sent from HTML forms.
 
@@ -23,6 +27,9 @@ export default async (app: Express): Promise<Express> => {
   app.get('/ping', (_req: Request, res: Response) => {
     res.send('pong')
   })
+
+  // Load API routes
+  app.use(config.api.prefix, routes())
 
   app.get('*', (_req: Request, res: Response) => {
     res.status(404).json({
