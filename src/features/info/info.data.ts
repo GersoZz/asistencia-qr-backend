@@ -1,5 +1,6 @@
 import { ICourse } from './info.interface'
 import AttendanceModel from './models/Attendance.model'
+import SectionModel from './models/Section.model'
 import CourseModel from './models/Section.model'
 import SessionModel from './models/Session.model'
 
@@ -59,4 +60,9 @@ export const getSessionStatesBySection = async (sectionId: string) => {
     console.error('Error fetching session states:', error)
     throw error
   }
+}
+
+export const getStudentsOfSection = async (sectionId: string): Promise<any> => {
+  const section = await SectionModel.findById(sectionId, { students: 1 }).populate('students')
+  return section
 }

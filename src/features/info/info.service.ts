@@ -12,3 +12,9 @@ export const getSessions = async (sectionId: string): Promise<any> => {
   const sections = await infoData.getSessionStatesBySection(sectionId)
   return sections
 }
+
+export const getStudentsOfSection = async (sectionId: string): Promise<any> => {
+  //P: verificar que tengan los permisos adecuados
+  const students = await infoData.getStudentsOfSection(sectionId)
+  return students
+}
