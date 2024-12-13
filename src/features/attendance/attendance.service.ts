@@ -14,6 +14,11 @@ export const generateQR = async (sessionId: string): Promise<any> => {
   return sessionIdJWT
 }
 
+export const getAttendanceOfSession = async (sessionId: string): Promise<any> => {
+  const attendances = await AttendanceModel.find({ session: sessionId }).populate('student')
+  return attendances
+}
+
 export const registerQR = async (jwtQR: string, userId: string): Promise<any> => {
   try {
     const aux = jwt.verify(
