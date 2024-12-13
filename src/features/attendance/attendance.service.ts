@@ -1,4 +1,9 @@
+import jwt, { type VerifyErrors } from 'jsonwebtoken'
+import config from 'src/config'
+
 import { createToken } from 'src/libs/jwt'
+import UserModel from '../users/models/User.model'
+import AttendanceModel from '../info/models/Attendance.model'
 
 export const generateQR = async (sessionId: string): Promise<any> => {
   //P: deberia pasarle tiempo de caducidad
@@ -7,4 +12,39 @@ export const generateQR = async (sessionId: string): Promise<any> => {
   })
 
   return sessionIdJWT
+}
+
+export const registerQR = async (jwtQR: string, userId: string): Promise<any> => {
+  try {
+    const aux = jwt.verify(
+      jwtQR as string,
+      config.secretToken as string,
+      async (error: VerifyErrors | null, payload: any) => {
+        if (error !== null) throw { success: false, data: { message: 'invalid jwtQR' } }
+
+        const sessionId = payload.sessionId
+
+        const userFound = await UserModel.findById(userId)
+        if (userFound === null) throw { success: false, data: { message: 'user not found' } }
+
+        const attendanceToCreate = {
+          student: userFound._id,
+          session: sessionId,
+          registerDate: new Date(),
+          state: true,
+        }
+
+        const newAttendance = new AttendanceModel(attendanceToCreate)
+        const savedAttendance = await newAttendance.save()
+        console.log('🚀 ~ file: attendance.service.ts:37 ~ jwt.verify ~ savedAttendance:', savedAttendance)
+
+        return savedAttendance
+      }
+    )
+    console.log('🚀 ~ file: attendance.service.ts:46 ~ registerQR ~ aux:', aux)
+
+    return aux
+  } catch (error) {
+    throw error
+  }
 }
