@@ -1,7 +1,7 @@
 import * as usersData from '@users/users.data'
 import * as authData from '@auth/auth.data'
 
-import { createAccessToken } from '../../libs/jwt'
+import { createToken } from '../../libs/jwt'
 import { ROLES } from 'src/utils/roles'
 
 export const googleOAuth = async (token: any): Promise<any> => {
@@ -16,7 +16,11 @@ export const googleOAuth = async (token: any): Promise<any> => {
     console.log('🚀 ~ file: auth.service.ts:61 ~ googleOAuth ~ userInfo:', userInfo)
 
     if (userInfo !== null) {
-      const tokenGenerated = await createAccessToken({ id: userInfo._id, role: userInfo.role })
+      const tokenGenerated = await createToken({
+        id: userInfo._id,
+        role: userInfo.role,
+        userInfo,
+      })
       return { token: tokenGenerated, userInfo }
     }
 
@@ -34,7 +38,11 @@ export const googleOAuth = async (token: any): Promise<any> => {
     console.log('🚀 ~ file: auth.service.ts:70 ~ googleOAuth ~ userRegistered:', userRegistered)
 
     // generamos el JWT
-    const tokenGenerated = await createAccessToken({ id: userRegistered._id, role: userRegistered.role })
+    const tokenGenerated = await createToken({
+      id: userRegistered._id,
+      role: userRegistered.role,
+      userInfo: userRegistered,
+    })
 
     return { token: tokenGenerated, userInfo: userRegistered }
   } catch (error) {
