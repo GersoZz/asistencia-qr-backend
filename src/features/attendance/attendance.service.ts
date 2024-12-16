@@ -4,6 +4,7 @@ import config from 'src/config'
 import { createToken } from 'src/libs/jwt'
 import UserModel from '../users/models/User.model'
 import AttendanceModel from '../info/models/Attendance.model'
+import * as attendanceData from './attendance.data'
 
 export const generateQR = async (sessionId: string): Promise<any> => {
   //P: deberia pasarle tiempo de caducidad
@@ -32,16 +33,13 @@ export const registerQR = async (jwtQR: string, userId: string): Promise<any> =>
         const userFound = await UserModel.findById(userId)
         if (userFound === null) throw { success: false, data: { message: 'user not found' } }
 
-        const attendanceToCreate = {
-          student: userFound._id,
-          session: sessionId,
-          registerDate: new Date(),
+        const savedAttendance = await attendanceData.createAttendance({
+          sessionId,
+          studentId: userFound._id.toString(),
           state: true,
-        }
+        })
 
-        const newAttendance = new AttendanceModel(attendanceToCreate)
-        const savedAttendance = await newAttendance.save()
-        console.log('🚀 ~ file: attendance.service.ts:37 ~ jwt.verify ~ savedAttendance:', savedAttendance)
+        console.log('🚀 ~ jwt.verify ~ savedAttendance:', savedAttendance)
 
         return savedAttendance
       }

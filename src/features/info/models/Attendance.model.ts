@@ -13,4 +13,7 @@ const AttendanceSchema = new Schema<IAttendance>(
   }
 )
 
+// Add a unique compound index to prevent duplicate student-session pairs
+AttendanceSchema.index({ student: 1, session: 1 }, { unique: true })
+
 export default model('Attendance', AttendanceSchema)
