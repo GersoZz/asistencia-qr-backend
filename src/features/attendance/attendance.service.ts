@@ -5,6 +5,7 @@ import { createToken } from 'src/libs/jwt'
 import UserModel from '../users/models/User.model'
 import AttendanceModel from '../info/models/Attendance.model'
 import * as attendanceData from './attendance.data'
+import { UpdateStudentAttendanceData } from './attendance.interface'
 
 export const generateQR = async (sessionId: string): Promise<any> => {
   //P: deberia pasarle tiempo de caducidad
@@ -50,4 +51,20 @@ export const registerQR = async (jwtQR: string, userId: string): Promise<any> =>
   } catch (error) {
     throw error
   }
+}
+
+export const setAttendanceOfStudent = async (inputData: UpdateStudentAttendanceData): Promise<any> => {
+  if (inputData.state === false) {
+    const removedAttendances = await attendanceData.removeAttendanceOfStudent(inputData)
+    return removedAttendances
+  }
+
+  const updatedAttendances = await attendanceData.setAttendanceOfStudent(inputData)
+
+  if (updatedAttendances.matchedCount === 0) {
+    const newAttendance = await attendanceData.createAttendance(inputData)
+    return newAttendance
+  }
+
+  return updatedAttendances
 }

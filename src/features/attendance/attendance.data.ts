@@ -27,3 +27,37 @@ export const createAttendance = async (newStudentAttendance: UpdateStudentAttend
     throw error
   }
 }
+
+export const setAttendanceOfStudent = async (newStudentAttendance: UpdateStudentAttendanceData): Promise<any> => {
+  const { sessionId, studentId, state } = newStudentAttendance
+
+  const attendanceToUpdate = {
+    student: new Types.ObjectId(studentId),
+    session: new Types.ObjectId(sessionId),
+    state: state,
+    registerDate: new Date(),
+  }
+
+  const updatedAttendances = await AttendanceModel.updateMany(
+    { student: studentId, session: sessionId },
+    { $set: attendanceToUpdate }
+  )
+
+  return updatedAttendances
+}
+
+export const removeAttendanceOfStudent = async (newStudentAttendance: UpdateStudentAttendanceData): Promise<any> => {
+  const { sessionId, studentId } = newStudentAttendance
+
+  // const attendanceToRemove = {
+  //   student: new Types.ObjectId(studentId),
+  //   session: new Types.ObjectId(sessionId),
+  // }
+
+  const removedAttendances = await AttendanceModel.deleteMany({
+    $and: [{ student: studentId }, { session: sessionId }],
+  })
+  console.log('🚀 ~ file: attendance.data.ts:60 ~ removeAttendanceOfStudent ~ removedAttendances:', removedAttendances)
+
+  return removedAttendances
+}
