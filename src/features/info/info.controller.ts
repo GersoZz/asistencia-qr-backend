@@ -16,3 +16,35 @@ export const getSections = async (req: Request, res: Response): Promise<Response
     return res.status(errorStatus as number).json({ success: false, data: { message: error?.message } })
   }
 }
+
+export const getSessions = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const sectionId = req.params.sectionId as string
+    console.log('🚀 ~ file: info.controller.ts:23 ~ getSessions ~ sectionId:', sectionId)
+
+    // paso a la capa de servicios
+    const sessions = await etlServices.getSessions(sectionId)
+    console.log('🚀 ~ file: info.controller.ts:26 ~ getSessions ~ sessions:', sessions)
+
+    return res.status(200).send({ success: true, data: sessions })
+  } catch (error: any) {
+    const errorStatus = error?.status === undefined ? 500 : error.status
+    return res.status(errorStatus as number).json({ success: false, data: { message: error?.message } })
+  }
+}
+
+export const getStudentsOfSection = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const sectionId = req.params.sectionId as string
+    console.log('🚀 ~ file: info.controller.ts:23 ~ getSessions ~ sectionId:', sectionId)
+
+    // paso a la capa de servicios
+    const sessions = await etlServices.getStudentsOfSection(sectionId)
+    console.log('🚀 ~ file: info.controller.ts:26 ~ getSessions ~ sessions:', sessions)
+
+    return res.status(200).send({ success: true, data: sessions })
+  } catch (error: any) {
+    const errorStatus = error?.status === undefined ? 500 : error.status
+    return res.status(errorStatus as number).json({ success: false, data: { message: error?.message } })
+  }
+}

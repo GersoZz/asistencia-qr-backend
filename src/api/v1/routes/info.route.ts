@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { verifyToken } from '../middlewares/verifyToken'
-import { getSections } from '@info/info.controller'
+import { getSections, getSessions, getStudentsOfSection } from '@info/info.controller'
 
 const route = Router()
 
@@ -9,4 +9,10 @@ export default (app: Router): void => {
 
   // @ts-ignore - overload
   route.get('/get-sections', verifyToken, getSections)
+
+  // @ts-ignore - overload
+  route.get('/sections/:sectionId/sessions', verifyToken, getSessions)
+
+  // @ts-ignore - overload
+  route.get('/sections/:sectionId/students', verifyToken, getStudentsOfSection)
 }

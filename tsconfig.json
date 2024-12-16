@@ -36,6 +36,7 @@
       "@etl/*": ["./src/features/etl/*"],
       "@utils/*": ["./src/utils/*"],
       "@info/*": ["./src/features/info/*"],
+      "@attendance/*": ["./src/features/attendance/*"],
       },                                    /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */

@@ -14,3 +14,9 @@ export interface ISection {
   cod_section: string
   classroom: string
 }
+export interface IAttendance {
+  student: Types.ObjectId
+  session: Types.ObjectId
+  registerDate: Date
+  state: boolean
+}
