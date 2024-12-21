@@ -14,12 +14,12 @@ export const getSectionsByUserId = async (userId: string, userRole: string): Pro
     let sections: any[] = []
 
     if (userRole === ROLES.professor) {
-      sections = await SectionModel.find({ professors: userId }).populate({
+      sections = await SectionModel.find({ professors: userId }).sort({ createdAt: 1 }).populate({
         path: 'id_course',
         select: 'name',
       })
     } else if (userRole === ROLES.student) {
-      sections = await SectionModel.find({ students: userId }).populate({
+      sections = await SectionModel.find({ students: userId }).sort({ createdAt: 1 }).populate({
         path: 'id_course',
         select: 'name',
       })
