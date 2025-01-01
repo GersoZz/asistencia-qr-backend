@@ -18,7 +18,7 @@ export const getSessionStatesBySection = async (sectionId: string) => {
     const currentTimeUTC5 = new Date(currentTime.getTime() - 5 * 60 * 60 * 1000)
 
     // Obtener todas las Sessions de la Section específica
-    const sessions = await SessionModel.find({ id_seccion: sectionId })
+    const sessions = await SessionModel.find({ id_seccion: sectionId }).sort({ 'fecha_y_hora.fechaHoraInicio': 1 })
 
     const results = await Promise.all(
       sessions.map(async (session) => {
